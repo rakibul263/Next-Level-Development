@@ -8,13 +8,19 @@ class BankAccount {
     this.userName = userName;
     this.userBalance = userBalance;
   }
+  // setter
+  set setBalance(amountNumber: number) {
+    this.userBalance += amountNumber;
+  }
 
-  addBalance(balance: number) {
-    this.userBalance += balance;
-    console.log(`${this.userName} account balance is ${this.userBalance}`);
+  // getter
+  getBalance() {
+    return this.userBalance;
   }
 }
 
 const account1 = new BankAccount(123, "Rakibul", 200);
+account1.setBalance = 100;
 console.log(account1);
-account1.addBalance(50);
+
+console.log(account1.getBalance());
