@@ -145,3 +145,19 @@ class BkashPayment extends Payment {
 
 const checkBkash = new BkashPayment();
 checkBkash.pay(100);
+
+// encapsulation
+class Account {
+  private _balance: number = 0;
+
+  deposit(amount: number) {
+    amount > 0 ? this._balance + amount : this._balance;
+  }
+
+  getBalance() {
+    return this._balance;
+  }
+}
+
+const checkAcc = new Account();
+console.log(checkAcc.getBalance());
