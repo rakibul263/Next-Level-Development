@@ -99,3 +99,49 @@ class Wallet {
 const wallet1 = new Wallet();
 wallet1.deposit = 1500;
 console.log("Bank balance is : ", wallet1.balance);
+
+// polymorphism
+class SpecialVehicle {
+  calculateFare(distance: number): number {
+    return distance * 10;
+  }
+}
+
+class SpecialCar extends SpecialVehicle {
+  calculateFare(distance: number): number {
+    return distance * 500;
+  }
+}
+
+class PathaoBike extends SpecialVehicle {
+  calculateFare(distance: number): number {
+    return distance * 20;
+  }
+}
+
+const instance1 = new SpecialVehicle();
+const instance2 = new SpecialCar();
+const instance3 = new PathaoBike();
+
+console.log(instance1.calculateFare(10));
+console.log(instance2.calculateFare(10));
+console.log(instance3.calculateFare(10));
+
+// abstract
+
+abstract class Payment {
+  abstract pay(amount: number): void;
+
+  printReceipt() {
+    console.log("Payment Done");
+  }
+}
+
+class BkashPayment extends Payment {
+  pay(amount: number) {
+    console.log(`paid ${amount} via bkash`);
+  }
+}
+
+const checkBkash = new BkashPayment();
+checkBkash.pay(100);
