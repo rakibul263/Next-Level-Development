@@ -27,3 +27,26 @@ function printId(id: number | string) {
 
 printId("abc");
 printId(123.456);
+
+// instanceof
+class Car {
+  drive() {
+    console.log("drive car...");
+  }
+}
+class Bike {
+  ride() {
+    console.log("Bike Ride...");
+  }
+}
+
+function operate(vehicle: Bike | Car) {
+  if (vehicle instanceof Bike) {
+    vehicle.ride();
+  } else {
+    vehicle.drive();
+  }
+}
+
+operate(new Car());
+operate(new Bike());
