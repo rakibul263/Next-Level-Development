@@ -50,3 +50,33 @@ function operate(vehicle: Bike | Car) {
 
 operate(new Car());
 operate(new Bike());
+
+// access modifier = koi theke access kora jabe kothay theke access kora jabe na
+class Driver {
+  public name: string;
+  private nid: string;
+  protected earning: number;
+
+  constructor(name: string, nid: string, earning: number) {
+    this.name = name;
+    this.nid = nid;
+    this.earning = earning;
+  }
+}
+
+const driverName = new Driver("Rakibul", "nidbd323323", 1300);
+console.log(driverName.name);
+
+// inheritance
+class ProDriver extends Driver {
+  constructor() {
+    super("Shuvo", "nidbd12", 2300);
+    this.earning = 3000;
+  }
+  certifiedDriver() {
+    console.log("He is a pro driver");
+  }
+}
+const nextGenDriver = new ProDriver();
+console.log(nextGenDriver);
+nextGenDriver.certifiedDriver();
