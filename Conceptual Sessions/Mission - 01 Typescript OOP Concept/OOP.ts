@@ -80,3 +80,22 @@ class ProDriver extends Driver {
 const nextGenDriver = new ProDriver();
 console.log(nextGenDriver);
 nextGenDriver.certifiedDriver();
+
+// Getter and Setter
+class Wallet {
+  private _balance: number = 0;
+
+  get balance() {
+    return this._balance;
+  }
+
+  set deposit(amount: number) {
+    if (amount > 0) {
+      this._balance += amount;
+    }
+  }
+}
+
+const wallet1 = new Wallet();
+wallet1.deposit = 1500;
+console.log("Bank balance is : ", wallet1.balance);
