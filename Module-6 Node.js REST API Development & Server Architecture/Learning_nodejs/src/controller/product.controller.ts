@@ -32,5 +32,13 @@ export const productController = (
         data: product || null,
       }),
     );
+  } else if (method === "POST" && url === "/products") {
+    res.writeHead(200, { "content-type": "application/json" });
+    res.end(
+      JSON.stringify({
+        message: "Product created",
+        data: null,
+      }),
+    );
   }
 };
