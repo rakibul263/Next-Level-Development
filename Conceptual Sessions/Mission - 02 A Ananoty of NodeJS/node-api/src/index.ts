@@ -6,9 +6,9 @@ const server = createServer((req, res) => {
 
   if (url === "/") {
     sendResponse(res, { message: "Welcome to our server" }, 200);
+    return;
   } else {
-    res.writeHead(200, { "content-type": "application/json" });
-    res.end(JSON.stringify({ message: "Not Found" }));
+    sendResponse(res, { message: "Not Found" }, 404);
   }
 });
 
