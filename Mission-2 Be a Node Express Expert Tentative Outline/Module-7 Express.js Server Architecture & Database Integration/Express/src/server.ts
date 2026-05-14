@@ -44,7 +44,7 @@ app.get("/", (req: Request, res: Response) => {
   });
 });
 
-app.post("/", async (req: Request, res: Response) => {
+app.post("/api/users", async (req: Request, res: Response) => {
   const { name, email, password, age } = req.body;
   try {
     const result = await pool.query(
@@ -61,6 +61,58 @@ app.post("/", async (req: Request, res: Response) => {
     });
   } catch (error: any) {
     res.status(500).json({
+      message: error.message,
+      error: error,
+    });
+  }
+});
+
+app.get("/api/users", async (req: Request, res: Response) => {
+  try {
+    const result = await pool.query(`
+        SELECT * FROM users
+      `);
+    res.status(200).json({
+      success: true,
+      message: "Users retrived successfully",
+      data: result,
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+      error: error,
+    });
+  }
+});
+
+app.put("/api/users/:id", async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { name, password, age, is_active } = req.body;
+    // console.log(name, password, age, is_active);
+    const result = await pool.query(
+      `
+      UPDATE users SET name=$1, password=$2, is_active=$3, age=$4
+      WHERE id=$5
+      RETURNING *;
+    `,
+      [name, password, is_active, age, id],
+    );
+    if (result.rows.length === 0) {
+      res.status(404).json({
+        success: false,
+        message: "Data Not Found",
+      });
+    }
+    res.status(200).json({
+      success: true,
+      message: "Update User successfully",
+      data: result,
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
       message: error.message,
       error: error,
     });
