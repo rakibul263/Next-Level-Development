@@ -1,20 +1,19 @@
+import { orderService } from "../service/order.service";
 import type { Req, Res } from "../type";
-import orderService from "../service/order.service";
 import { sendResponse } from "../utils";
 
 export const orderRoute = async (req: Req, res: Res) => {
-  const url = req.url ?? "/";
+  const params = req.url?.split("/").filter(Boolean);
 
-  if (req.method === "GET" && url === "/order") {
-    const data = await orderService.get();
-    sendResponse(res, data, 200);
-  } else if (req.method === "POST" && url === "/order/create") {
-    let body = "";
-    req.on("data", (chunk) => (body += chunk));
-    req.on("end", async () => {
-      const order = JSON.parse(body);
-      const newOrder = await orderService.create(order);
-      sendResponse(res, newOrder, 201);
-    });
+  if (req.method === "GET") {
+    if (params?.[1]) {
+      const id = Number(params[1]);
+      const order = await orderService.getById(id);
+      sendResponse(res, { message: "Order retrieved successfully", data: order }, order ? 200 : 404);
+      return;
+    }
+    const orders = await orderService.get();
+    sendResponse(res, { message: "Orders retrieved successfully", data: orders }, 200);
+    return;
   }
 };
