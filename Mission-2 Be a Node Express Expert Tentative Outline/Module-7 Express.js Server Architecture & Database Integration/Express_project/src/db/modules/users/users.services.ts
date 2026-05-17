@@ -1,6 +1,7 @@
 import { dbConnection } from "../../database";
+import type { IUser } from "./users.interface";
 
-const createUserIntoDB = async (payload: any) => {
+const createUserIntoDB = async (payload: IUser) => {
   const { name, email, password, age } = payload;
   // data insert on database
   const insertData = await dbConnection.query(
