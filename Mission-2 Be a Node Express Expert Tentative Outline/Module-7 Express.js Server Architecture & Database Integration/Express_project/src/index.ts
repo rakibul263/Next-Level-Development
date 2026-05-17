@@ -68,6 +68,51 @@ app.post("/users", async (req: Request, res: Response) => {
       .json({ success: false, message: "Failed to create user", error });
   }
 });
+
+// get method
+app.get("/users", async (req: Request, res: Response) => {
+  try {
+    const getData = await dbConnection.query(
+      `
+        SELECT * FROM users
+        ORDER BY id ASC
+        `,
+    );
+    res.status(200).json({
+      success: true,
+      data: getData.rows,
+    });
+  } catch (error) {
+    res
+      .status(404)
+      .json({ success: false, message: "Failed to create user", error });
+  }
+});
+
+// get user by id
+app.get("/users/:id", async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const getUserById = await dbConnection.query(
+      `
+            SELECT * FROM users
+            WHERE id = $1
+        `,
+      [id],
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "Data Found Successfully.",
+      data: getUserById.rows[0],
+    });
+  } catch (error) {
+    res.status(404).json({
+      success: false,
+      message: "Data not found.",
+    });
+  }
+});
 app.listen(PORT, () => {
   console.log(`Server is running at ${PORT} port`);
 });
