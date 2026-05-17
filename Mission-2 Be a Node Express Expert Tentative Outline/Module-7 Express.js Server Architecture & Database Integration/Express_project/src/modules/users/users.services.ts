@@ -1,16 +1,18 @@
+import bcrypt from "bcryptjs";
 import { dbConnection } from "../../db/database";
 import type { IUser } from "./users.interface";
 
 const createUserIntoDB = async (payload: IUser) => {
   const { name, email, password, age } = payload;
+  const hashPassword = await bcrypt.hash(password, 10);
   // data insert on database
   const insertData = await dbConnection.query(
     `
             INSERT INTO users(name, email, password, age)
             VALUES($1, $2, $3, $4)
-            RETURNING *
+            RETURNING name, email, age
         `,
-    [name, email, password, age],
+    [name, email, hashPassword, age],
   );
   return insertData;
 };
@@ -23,6 +25,7 @@ const getUserIntoDB = async () => {
         ORDER BY id ASC
         `,
   );
+  delete getData.rows[0].password;
   return getData;
 };
 
