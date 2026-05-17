@@ -44,11 +44,30 @@ app.get("/", (req: Request, res: Response) => {
     .json({ message: "Express Project.", author: "Rakibul Hasan" });
 });
 
-app.post("/", async (req: Request, res: Response) => {
-  const { name, email } = req.body;
-  res.status(201).json({ message: "Created", data: name, email });
+// post method
+app.post("/users", async (req: Request, res: Response) => {
+  try {
+    const { name, email, password, age } = req.body;
+    // data insert on database
+    const insertData = await dbConnection.query(
+      `
+            INSERT INTO users(name, email, password, age)
+            VALUES($1, $2, $3, $4)
+            RETURNING *
+        `,
+      [name, email, password, age],
+    );
+    res.status(201).json({
+      success: true,
+      message: "User created successfully",
+      data: insertData.rows[0],
+    });
+  } catch (error) {
+    res
+      .status(404)
+      .json({ success: false, message: "Failed to create user", error });
+  }
 });
-
 app.listen(PORT, () => {
   console.log(`Server is running at ${PORT} port`);
 });
