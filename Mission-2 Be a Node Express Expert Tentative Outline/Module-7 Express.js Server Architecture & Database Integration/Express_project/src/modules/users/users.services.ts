@@ -1,4 +1,4 @@
-import { dbConnection } from "../../database";
+import { dbConnection } from "../../db/database";
 import type { IUser } from "./users.interface";
 
 const createUserIntoDB = async (payload: IUser) => {

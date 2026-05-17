@@ -1,5 +1,5 @@
-import { Pool } from "pg";
 import dotenv from "dotenv";
+import { Pool } from "pg";
 dotenv.config();
 
 // database connection
@@ -22,6 +22,21 @@ export const createTable = async () => {
                     updated_at TIMESTAMP DEFAULT NOW()
                 )
             `);
+
+    await dbConnection.query(`DROP TABLE IF EXISTS profiles CASCADE`);
+
+    await dbConnection.query(`
+          CREATE TABLE IF NOT EXISTS profiles(
+            id SERIAL PRIMARY KEY,
+            user_id INT UNIQUE REFERENCES users(id) ON DELETE CASCADE,
+            bio TEXT,
+            address TEXT,
+            phone VARCHAR(15),
+            gender VARCHAR(10),
+            created_at TIMESTAMP DEFAULT NOW(),
+            updated_at TIMESTAMP DEFAULT NOW()
+          )
+        `);
   } catch (error) {
     console.log(error);
   }
