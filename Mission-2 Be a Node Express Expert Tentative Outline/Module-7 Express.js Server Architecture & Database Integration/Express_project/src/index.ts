@@ -120,6 +120,39 @@ app.get("/users/:id", async (req: Request, res: Response) => {
   }
 });
 
+// update user
+app.put("/users/:id", async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { name, email, password, age } = req.body;
+
+    const updateUserUsingId = await dbConnection.query(
+      `
+            UPDATE users
+            SET 
+                name = COALESCE($1, name),
+                email = COALESCE($2, email),
+                password = COALESCE($3, password),
+                age = COALESCE($4, age),
+                updated_at = NOW()
+            WHERE id = $5
+            RETURNING *
+        `,
+      [name, email, password, age, id],
+    );
+    res.status(201).json({
+      success: true,
+      message: "Data update successfully.",
+      data: updateUserUsingId.rows[0]
+    });
+  } catch (error) {
+    res.status(404).json({
+      success: false,
+      message: "Data cannot update successfully. Please check",
+    });
+  }
+});
+
 // delete user
 app.delete("/users/:id", async (req: Request, res: Response) => {
   try {
