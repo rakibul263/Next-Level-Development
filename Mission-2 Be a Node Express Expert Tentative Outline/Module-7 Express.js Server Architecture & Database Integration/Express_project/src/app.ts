@@ -1,41 +1,15 @@
-import dotenv from "dotenv";
 import express, {
   type Application,
   type Request,
   type Response,
 } from "express";
-import { Pool } from "pg";
+import { createTable, dbConnection } from "./db/database";
 const app: Application = express();
-const PORT = 3000;
 
 // middleware
 app.use(express.json());
-dotenv.config();
-// db connection
-const dbConnection = new Pool({
-  connectionString: process.env.DB_URL,
-});
 
-// create table automatically
-const createTable = async () => {
-  try {
-    await dbConnection.query(`
-                CREATE TABLE IF NOT EXISTS users(
-                    id SERIAL PRIMARY KEY,
-                    name VARCHAR(50),
-                    email VARCHAR(50) NOT NULL,
-                    password VARCHAR(50) NOT NULL,
-                    is_active BOOLEAN DEFAULT true,
-                    age INT,
-                    created_at TIMESTAMP DEFAULT NOW(),
-                    updated_at TIMESTAMP DEFAULT NOW()
-                )
-            `);
-  } catch (error) {
-    console.log(error);
-  }
-};
-
+// create table function call
 createTable();
 
 app.get("/", (req: Request, res: Response) => {
@@ -143,7 +117,7 @@ app.put("/users/:id", async (req: Request, res: Response) => {
     res.status(201).json({
       success: true,
       message: "Data update successfully.",
-      data: updateUserUsingId.rows[0]
+      data: updateUserUsingId.rows[0],
     });
   } catch (error) {
     res.status(404).json({
@@ -177,6 +151,4 @@ app.delete("/users/:id", async (req: Request, res: Response) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`Server is running at ${PORT} port`);
-});
+export default app;
