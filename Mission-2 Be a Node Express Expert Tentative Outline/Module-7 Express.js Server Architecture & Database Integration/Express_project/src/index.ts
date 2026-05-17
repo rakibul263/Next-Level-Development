@@ -113,6 +113,31 @@ app.get("/users/:id", async (req: Request, res: Response) => {
     });
   }
 });
+
+// delete user
+app.delete("/users/:id", async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    await dbConnection.query(
+      `
+            DELETE FROM users
+            WHERE id = $1
+        `,
+      [id],
+    );
+    res.status(200).json({
+      success: true,
+      message: `No =${id} id : user delete successfully.`,
+    });
+  } catch (error) {
+    res.status(404).json({
+      success: false,
+      message: "Something want wrong. Data not deleted.",
+      error: error,
+    });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`Server is running at ${PORT} port`);
 });
