@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "dev": "tsx watch ./src/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -11,9 +12,10 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@types/node": "^25.7.0"
+    "@types/node": "^25.8.0"
   },
   "dependencies": {
-    "tsx": "^4.21.0"
+    "tsc": "^2.0.4",
+    "tsx": "^4.22.0"
   }
 }
