@@ -16,7 +16,8 @@ class AuthService {
 
   async validateUser(email: string, password: string) {
     const res = await sql`
-      SELECT * FROM users WHERE email = ${email}
+      SELECT id, name, email, password_hash, age, role
+      FROM users WHERE email = ${email}
       `;
     if (res.length === 0) return null;
     const { password_hash, ...user } = res[0] as User;
