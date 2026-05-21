@@ -10,11 +10,11 @@ app.use(express.json());
 // logger added
 app.use(logger);
 
-app.use("/api/users", userRouter);
-app.use("/api/profile", profileRouter);
 app.use("/api/auth", authRouter);
+app.use("/api/users", userRouter);
+app.use("/api/profile", auth, profileRouter);
 
-app.get("/", auth, (req, res) => {
+app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 

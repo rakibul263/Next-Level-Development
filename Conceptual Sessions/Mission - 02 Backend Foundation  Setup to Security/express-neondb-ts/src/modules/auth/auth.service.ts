@@ -28,12 +28,13 @@ export const authLoginIntoDB = async (payload: {
     id: user.id,
     name: user.name,
     email: user.email,
+    role: user.role,
   };
   const accessToken = jwt.sign(jwtPayload, config.jwt_secret as string, {
     expiresIn: "24h",
   });
 
   return {
-    accessToken
-  }
+    accessToken,
+  };
 };

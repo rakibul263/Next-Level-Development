@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { auth } from "../../middlewares/auth";
 import {
   createUserController,
   deleteUserController,
@@ -10,9 +11,9 @@ import {
 const router = Router();
 
 router.post("/", createUserController);
-router.get("/", getAllUserController);
-router.get("/:id", getSingleUserController);
-router.put("/:id", updateUserController);
-router.delete("/:id", deleteUserController);
+router.get("/", auth, getAllUserController);
+router.get("/:id", auth, getSingleUserController);
+router.put("/:id", auth, updateUserController);
+router.delete("/:id", auth, deleteUserController);
 
 export default router;

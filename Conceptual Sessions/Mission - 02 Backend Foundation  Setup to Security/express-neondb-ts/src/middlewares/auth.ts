@@ -9,7 +9,8 @@ interface JwtPayload {
 }
 
 export const auth = (req: Request, res: Response, next: NextFunction) => {
-  const token = req.headers.authorization;
+  const authHeader = req.headers.authorization;
+  const token = authHeader?.startsWith("Bearer ") ? authHeader.split(" ")[1] : authHeader;
   if (!token) {
     return res.status(401).json({
       success: false,
